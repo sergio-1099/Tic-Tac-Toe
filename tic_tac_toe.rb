@@ -27,3 +27,9 @@ class Board
     end
   end
 end
+
+class Player
+  def initialize(symbol)
+    @symbol = symbol
+  end
+end
