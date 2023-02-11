@@ -6,7 +6,11 @@ class Board
   end
   
   def fill_space(symbol, x_coordinate, y_coordinate)
-    @spaces[x_coordinate][y_coordinate] = symbol
+    if (@spaces[x_coordinate][y_coordinate] == " ")
+      @spaces[x_coordinate][y_coordinate] = symbol
+    else
+      puts "That place has already been chosen."
+    end
   end
 
   def print_board
@@ -29,7 +33,16 @@ class Board
 end
 
 class Player
+  attr_reader :symbol, :x_coordinate, :y_coordinate
+
   def initialize(symbol)
     @symbol = symbol
+  end
+
+  def choose_space
+    print "Enter Row Number (Starts at 0): "
+    @x_coordinate = gets.chomp.to_i
+    print "Enter Column Number (Starts at 0): "
+    @y_coordinate = gets.chomp.to_i
   end
 end
