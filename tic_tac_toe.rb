@@ -5,11 +5,11 @@ class Board
     @spaces = Array.new(3) { Array.new(3, " ") }
   end
   
-  def fillSpace(symbol, x_coordinate, y_coordinate)
+  def fill_space(symbol, x_coordinate, y_coordinate)
     @spaces[x_coordinate][y_coordinate] = symbol
   end
 
-  def printBoard
+  def print_board
     @spaces.each_index do |rows|
       @spaces[rows].each_index do |columns|
         if (columns == 2)
