@@ -1,33 +1,5 @@
 require 'pry-byebug'
 
-module game_winning_scenarios
-  def diagonal_win?(board)
-    if (board[0][0] == "X" && board[1][1] == "X" && board[2][2] == "X") ||
-      (board[0][2] == "X" && board[1][1] == "X" && board[2][0] == "X"))
-      return "X"
-    elsif ((board[0][0] == "O" && board[1][1] == "O" && board[2][2] == "O") ||
-      (board[0][2] == "O" && board[1][1] == "O" && board[2][0] == "O"))
-      return "O"
-    end
-  end
-
-  def row_win?(board)
-    board.each_index do |rows|
-      if (board[rows].all?("X"))
-        return "X"
-      elsif (board[rows].all?("O"))
-        return "Y"
-      end
-    end
-  end
-
-  def column_win?(board)
-    if (board[0][0] == board[0][1] == board[0][2]) return board[0][0]
-    elsif (board[1][0] == board[1][1] == board[1][2]) return board[1][0]
-    elsif (board[2][0] == board[2][1] == board[2][2]) return board[2][0]
-    end
-  end
-
 class Board
   def initialize
     @spaces = Array.new(3) { Array.new(3, " ") }
@@ -39,6 +11,40 @@ class Board
     else
       puts "That place has already been chosen."
     end
+  end
+
+  def game_winner?
+    # Row check
+    @spaces.each_index do |rows|
+      if (@spaces[rows].all?("X"))
+        return "X"
+      elsif (@spaces[rows].all?("O"))
+        return "O"
+      end
+    end
+
+    # Column check
+    @spaces.each_index do |column|
+      if ((@spaces[0][column] == @spaces[1][column] && @spaces[1][column] == @spaces[2][column]) && @spaces[0][column] == "X")
+        return "X"
+      elsif ((@spaces[0][column] == @spaces[1][column] && @spaces[1][column] == @spaces[2][column]) && @spaces[0][column] == "O")
+        return "O"
+      end
+    end
+
+    # Diagonal Check
+    if ((@spaces[0][0] == @spaces[1][1] && @spaces[1][1] == @spaces[2][2]) && @spaces[0][0] == "X")
+      return "X"
+    elsif ((@spaces[0][2] == @spaces[1][1] && @spaces[1][1] == @spaces[2][0]) && @spaces[0][2] == "X")
+      return "X"
+    elsif ((@spaces[0][0] == @spaces[1][1] && @spaces[1][1] == @spaces[2][2]) && @spaces[0][0] == "O")
+      return "O"
+    elsif ((@spaces[0][2] == @spaces[1][1] && @spaces[1][1] == @spaces[2][0]) && @spaces[0][2] == "O")
+      return "O"
+    end
+
+
+    return false
   end
 
   def print_board
@@ -73,4 +79,19 @@ class Player
     print "Enter Column Number (Starts at 0): "
     @y_coordinate = gets.chomp.to_i
   end
+end
+
+
+playerX = Player.new("X")
+playerO = Player.new("O")
+
+board = Board.new
+
+game = false
+
+while (game == false)
+  playerX.choose_space
+  board.fill_space(playerX.symbol, playerX.x_coordinate, playerX.y_coordinate)
+  board.print_board
+  puts board.game_winner?
 end
