@@ -47,6 +47,19 @@ class Board
     return false
   end
 
+  def tie_game?
+    tie_game = false
+    @spaces.each_index do |rows|
+      if (@spaces[rows].all? {|element| element == "X" || element == "O" })
+        tie_game = true
+      else
+        tie_game = false
+      end
+    end
+
+    return tie_game
+  end
+
   def print_board
     @spaces.each_index do |rows|
       @spaces[rows].each_index do |columns|
@@ -105,6 +118,11 @@ def playGame
       break
     end
 
+    if (board.tie_game?) 
+      puts "You tied!"
+      return
+    end
+
     playerO.choose_space
     while (board.fill_space(playerO.symbol, playerO.x_coordinate, playerO.y_coordinate) == false)
       playerO.choose_space
@@ -114,6 +132,11 @@ def playGame
     winner = board.game_winner?
     if (winner)
       break
+    end
+
+    if (board.tie_game?) 
+      puts "You tied!"
+      return
     end
   end
 
