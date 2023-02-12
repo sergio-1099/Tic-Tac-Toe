@@ -116,7 +116,9 @@ def playGame
       break
     end
   end
+
+  return "Player #{winner} won!"
 end
 
 
-playGame
+puts playGame
