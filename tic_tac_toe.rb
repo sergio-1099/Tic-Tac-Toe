@@ -54,6 +54,7 @@ class Board
         tie_game = true
       else
         tie_game = false
+        return tie_game
       end
     end
 
