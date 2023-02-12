@@ -9,7 +9,8 @@ class Board
     if (@spaces[x_coordinate][y_coordinate] == " ")
       @spaces[x_coordinate][y_coordinate] = symbol
     else
-      puts "That place has already been chosen."
+      puts "That place has already been chosen. Choose again..."
+      return false
     end
   end
 
@@ -43,7 +44,6 @@ class Board
       return "O"
     end
 
-
     return false
   end
 
@@ -74,24 +74,49 @@ class Player
   end
 
   def choose_space
-    print "Enter Row Number (Starts at 0): "
-    @x_coordinate = gets.chomp.to_i
-    print "Enter Column Number (Starts at 0): "
-    @y_coordinate = gets.chomp.to_i
+    @x_coordinate = -1
+    @y_coordinate = -1
+    while (@x_coordinate < 0 || x_coordinate > 2)
+      print "Enter Row Number (Starts at 1): "
+      @x_coordinate = gets.chomp.to_i - 1
+    end
+    while (@y_coordinate < 0 || y_coordinate > 2)
+      print "Enter Column Number (Starts at 1): "
+      @y_coordinate = gets.chomp.to_i - 1
+    end
+  end
+end
+
+def playGame
+  playerX = Player.new("X")
+  playerO = Player.new("O")
+  board = Board.new
+  winner = board.game_winner?
+
+  while (winner == false)
+    playerX.choose_space
+    while (board.fill_space(playerX.symbol, playerX.x_coordinate, playerX.y_coordinate) == false)
+      playerX.choose_space
+    end
+    board.print_board
+
+    winner = board.game_winner?
+    if (winner)
+      break
+    end
+
+    playerO.choose_space
+    while (board.fill_space(playerO.symbol, playerO.x_coordinate, playerO.y_coordinate) == false)
+      playerO.choose_space
+    end
+    board.print_board
+
+    winner = board.game_winner?
+    if (winner)
+      break
+    end
   end
 end
 
 
-playerX = Player.new("X")
-playerO = Player.new("O")
-
-board = Board.new
-
-game = false
-
-while (game == false)
-  playerX.choose_space
-  board.fill_space(playerX.symbol, playerX.x_coordinate, playerX.y_coordinate)
-  board.print_board
-  puts board.game_winner?
-end
+playGame
